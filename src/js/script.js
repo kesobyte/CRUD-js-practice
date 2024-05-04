@@ -6,7 +6,7 @@ import { Confirm } from 'notiflix/build/notiflix-confirm-aio.js';
 const addBtnEl = document.querySelector('.addBtn');
 const myUL = document.getElementById('myUL');
 const myInput = document.getElementById('myInput');
-let currentId = 1;
+let currentId = 0;
 
 //Call function fillTodoList() upon loading the page
 window.addEventListener('DOMContentLoaded', fillTodoList);
@@ -27,16 +27,18 @@ function fillTodoList() {
   getTodos()
     .then(todos => {
       todos.forEach(({ text, isDone, id }) => createLi(text, isDone, id));
+      return todos; //Pass the todos array to the next then block
     })
     .then(todos => {
-      if (todos?.length > 0) {
+      if (todos.length > 0) {
         currentId = parseInt(todos[todos.length - 1].id) + 1;
+        console.log(currentId);
       }
     });
 }
 
 //Creation of list function
-function createLi(text, isDone = false, id = currentId) {
+function createLi(text, isDone, id) {
   let li = document.createElement('li');
   li.innerText = text;
   li.dataset.id = id;
@@ -65,7 +67,7 @@ addBtnEl.addEventListener('click', async () => {
   try {
     let todoRes = await addTodo(todoObj);
     if (todoRes.status === 201) {
-      createLi(todo);
+      createLi(todo, false, currentId);
       Notify.success('Todo was added successfully');
     }
   } catch (e) {

@@ -7,7 +7,6 @@ const BASE_URL = 'https://6633a04df7d50bbd9b4a1c49.mockapi.io/todos';
 export const getTodos = async () => {
   //Using GET to fetch data
   let response = await axios.get(BASE_URL);
-  console.log(response.data);
   return response.data;
 };
 
@@ -21,12 +20,12 @@ export const addTodo = async todo => {
 //Delete a Todo
 export const deleteTodo = async id => {
   //Using DELETE to delete data
-  return axios.delete(`${BASE_URL}/${id}`);
+  return await axios.delete(`${BASE_URL}/${id}`);
 };
 
 //Update a Todo
 export const updateTodo = async (id, status) => {
-  return axios.put(`${BASE_URL}/${id}`, {
+  return await axios.put(`${BASE_URL}/${id}`, {
     isDone: !status,
   });
 };
