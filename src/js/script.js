@@ -1,3 +1,5 @@
+console.log('kesobyte');
+
 import { getTodos, addTodo, deleteTodo, updateTodo } from './api.js';
 import { Notify } from 'notiflix/build/notiflix-notify-aio.js';
 import { Confirm } from 'notiflix/build/notiflix-confirm-aio.js';
@@ -32,7 +34,6 @@ function fillTodoList() {
     .then(todos => {
       if (todos.length > 0) {
         currentId = parseInt(todos[todos.length - 1].id) + 1;
-        console.log(currentId);
       }
     });
 }
@@ -51,7 +52,14 @@ function createLi(text, isDone, id) {
 //////////////////////////////////////////////
 
 //Add Todo
-addBtnEl.addEventListener('click', async () => {
+addBtnEl.addEventListener('click', addTodoHandler);
+myInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    addTodoHandler();
+  }
+});
+
+async function addTodoHandler() {
   let todo = myInput.value.trim();
 
   //Validation
@@ -68,12 +76,13 @@ addBtnEl.addEventListener('click', async () => {
     let todoRes = await addTodo(todoObj);
     if (todoRes.status === 201) {
       createLi(todo, false, currentId);
+      myInput.value = '';
       Notify.success('Todo was added successfully');
     }
   } catch (e) {
     Notify.failure('Something went wrong. Please try again');
   }
-});
+}
 
 //////////////////////////////////////////////
 
@@ -101,6 +110,6 @@ myUL.addEventListener('click', e => {
   if (e.target.tagName === 'LI') {
     updateTodo(e.target.dataset.id, e.target.classList.contains('checked'));
     e.target.classList.toggle('checked');
-    Notify.success('Todo was updated');
+    Notify.info('Todo was updated');
   }
 });
