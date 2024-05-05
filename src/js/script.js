@@ -1,11 +1,12 @@
 console.log('kesobyte');
 
+//Import API and Packages
 import { getTodos, addTodo, deleteTodo, updateTodo } from './api.js';
 import { Notify } from 'notiflix/build/notiflix-notify-aio.js';
 import { Confirm } from 'notiflix/build/notiflix-confirm-aio.js';
 
 //Target element
-const addBtnEl = document.querySelector('.addBtn');
+const addBtnEl = document.getElementById('addBtn');
 const myUL = document.getElementById('myUL');
 const myInput = document.getElementById('myInput');
 let currentId = 0;
@@ -15,12 +16,16 @@ window.addEventListener('DOMContentLoaded', fillTodoList);
 
 //Add Close Button to each Todo in the list
 function addCloseBtn(li) {
-  let span = document.createElement('span'); //<span></span>
-  let close = document.createTextNode('\u00D7'); //X
-  span.className = 'close';
-  span.appendChild(close);
-  li.appendChild(span);
+  li.innerHTML += '<span class="close">\u00D7</span>';
 }
+
+// const addCloseBtn = li => {
+//   let span = document.createElement('span'); //<span></span>
+//   let close = document.createTextNode('\u00D7'); //<span>X</span>
+//   span.className = 'close'; //<span class="close">X</span>
+//   span.appendChild(close);
+//   li.appendChild(span);
+// };
 
 //////////////////////////////////////////////
 
